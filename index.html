@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plasma Launchpad - Create Your Token</title>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated Background - Optimized */
+    .bg-animation {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #000d1a 100%);
+      will-change: transform;
+    }
+
+    .bg-animation::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.5;
+    }
+
+    /* Floating orbs - Reduced and optimized */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.3;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .orb1 {
+      width: 200px;
+      height: 200px;
+      background: #8a2be2;
+      top: 10%;
+      left: 10%;
+      animation: floatSlow 20s infinite ease-in-out;
+    }
+
+    .orb2 {
+      width: 150px;
+      height: 150px;
+      background: #00ff88;
+      bottom: 10%;
+      right: 10%;
+      animation: floatSlow 25s infinite ease-in-out reverse;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, -30px); }
+    }
+
+    /* Main Container */
+    .main-container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: rgba(15, 15, 25, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(138, 43, 226, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Logo and Title */
+    .logo-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #8a2be2, #00ff88);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #8a2be2, #00ff88, #00ffff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .subtitle {
+      color: #8b8b9f;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* Network Badge */
+    .network-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(138, 43, 226, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 100px;
+      margin-bottom: 30px;
+      font-size: 14px;
+      color: #b794f6;
+    }
+
+    .network-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: #00ff88;
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Wallet Status Card */
+    .wallet-status {
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(0, 255, 136, 0.1));
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      display: none;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .wallet-status.connected {
+      display: block;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .wallet-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wallet-address {
+      font-family: 'Monaco', monospace;
+      font-size: 14px;
+      color: #00ff88;
+    }
+
+    .wallet-balance {
+      color: #8b8b9f;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #b794f6;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(20, 20, 35, 0.6);
+      border: 2px solid rgba(138, 43, 226, 0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #8a2be2;
+      background: rgba(138, 43, 226, 0.05);
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+    }
+
+    input::placeholder {
+      color: #5a5a6e;
+    }
+
+    /* Fee Info */
+    .fee-info {
+      background: rgba(138, 43, 226, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .fee-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .fee-label {
+      color: #b794f6;
+      font-size: 14px;
+    }
+
+    .fee-value {
+      color: #00ff88;
+      font-weight: bold;
+    }
+
+    .fee-total {
+      border-top: 1px solid rgba(138, 43, 226, 0.2);
+      margin-top: 10px;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #8a2be2, #6a1b9a);
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(138, 43, 226, 0.3);
+      margin-bottom: 15px;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(138, 43, 226, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #00ff88;
+      border: 2px solid #00ff88;
+      box-shadow: 0 5px 20px rgba(0, 255, 136, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 255, 136, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Messages */
+    .message {
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      animation: shake 0.5s;
+    }
+
+    .message.error {
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      color: #ff3b30;
+    }
+
+    .message.warning {
+      background: rgba(255, 204, 0, 0.1);
+      border: 1px solid rgba(255, 204, 0, 0.3);
+      color: #ffcc00;
+    }
+
+    .message.success {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: #00ff88;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(138, 43, 226, 0.2);
+      color: #5a5a6e;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #8a2be2;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer a:hover {
+      color: #00ff88;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      .orb1, .orb2 {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-container">
+    <div class="container">
+      <!-- Logo Section -->
+      <div class="logo-section">
+        <div class="logo">⚡</div>
+        <h1>Plasma Launchpad</h1>
+        <p class="subtitle">Create and launch your token on Plasma Chain</p>
+        
+        <div class="network-badge">
+          <span class="dot"></span>
+          <span>Plasma Mainnet (9745)</span>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="errorMsg" class="message error"></div>
+      <div id="warningMsg" class="message warning"></div>
+      <div id="successMsg" class="message success"></div>
+
+      <!-- Wallet Status -->
+      <div id="walletStatus" class="wallet-status">
+        <div class="wallet-info">
+          <div>
+            <div class="wallet-address" id="walletAddress"></div>
+            <div class="wallet-balance" id="walletBalance">Balance: Loading...</div>
+          </div>
+          <button onclick="disconnectWallet()" style="background: transparent; border: none; color: #ff3b30; cursor: pointer; font-size: 20px;">✕</button>
+        </div>
+      </div>
+
+      <!-- Token Creation Form -->
+      <div id="tokenForm" style="display: none;">
+        <div class="form-group">
+          <label for="tokenName">Token Name</label>
+          <input type="text" id="tokenName" placeholder="e.g. Plasma Token" maxlength="50">
+        </div>
+
+        <div class="form-group">
+          <label for="tokenSymbol">Token Symbol</label>
+          <input type="text" id="tokenSymbol" placeholder="e.g. PLASMA" maxlength="10" style="text-transform: uppercase;">
+        </div>
+
+        <div class="form-group">
+          <label for="totalSupply">Total Supply</label>
+          <input type="number" id="totalSupply" placeholder="e.g. 1000000" min="1" max="1000000000000">
+        </div>
+
+        <!-- Fee Information -->
+        <div class="fee-info">
+          <div class="fee-row">
+            <span class="fee-label">Creation Fee:</span>
+            <span class="fee-value">0.1 XPL</span>
+          </div>
+          <div class="fee-row">
+            <span class="fee-label">Est. Gas Fee:</span>
+            <span style="color: #8b8b9f; font-size: 14px;">~0.002 XPL</span>
+          </div>
+          <div class="fee-total">
+            <span style="color: #fff; font-weight: bold;">Total Cost:</span>
+            <span style="color: #00ff88; font-weight: bold; font-size: 18px;">~0.102 XPL</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="createBtn" onclick="createToken()">
+          <span>🚀</span>
+          <span>Launch Token (0.1 XPL Fee)</span>
+        </button>
+      </div>
+
+      <!-- Connect Button -->
+      <button class="btn btn-secondary" id="btnConnect" onclick="connectWallet()">
+        <span>🔗</span>
+        <span>Connect Wallet</span>
+      </button>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Powered by <a href="#" target="_blank">Plasma Network</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load ethers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+  <script>
+    // Plasma Chain Configuration
+    const PLASMA_CHAIN = {
+      chainId: '0x2611', // 9745 in hex (Plasma Mainnet)
+      chainName: 'Plasma Mainnet',
+      nativeCurrency: {
+        name: 'XPL',
+        symbol: 'XPL',
+        decimals: 18
+      },
+      rpcUrls: ['https://rpc.plasma.to'],
+      blockExplorerUrls: ['https://explorer.plasma.to']
+    };
+
+    // Token Factory Contract (Replace with your actual contract address)
+    const TOKEN_FACTORY_ADDRESS = '0x1234567890123456789012345678901234567890'; // REPLACE THIS!
+    const CREATION_FEE = '0.1'; // 0.1 XPL fee
+
+    // Simple Token Factory ABI (basic example)
+    const TOKEN_FACTORY_ABI = [
+      {
+        "inputs": [
+          {"name": "_name", "type": "string"},
+          {"name": "_symbol", "type": "string"},
+          {"name": "_totalSupply", "type": "uint256"}
+        ],
+        "name": "createToken",
+        "outputs": [{"name": "", "type": "address"}],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {"indexed": true, "name": "tokenAddress", "type": "address"},
+          {"indexed": true, "name": "creator", "type": "address"},
+          {"indexed": false, "name": "name", "type": "string"},
+          {"indexed": false, "name": "symbol", "type": "string"}
+        ],
+        "name": "TokenCreated",
+        "type": "event"
+      }
+    ];
+
+    let provider;
+    let signer;
+    let userAddress;
+
+    // Check wallet on load
+    window.addEventListener('load', async () => {
+      console.log("🚀 Initializing Plasma Launchpad...");
+      
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          if (accounts.length > 0) {
+            await connectWallet(true);
+          }
+        } catch (err) {
+          console.log("No accounts connected");
+        }
+      }
+    });
+
+    async function connectWallet(autoConnect = false) {
+      console.log("🔗 Connecting to wallet...");
+      
+      const btnConnect = document.getElementById('btnConnect');
+      const walletStatus = document.getElementById('walletStatus');
+      const errorMsg = document.getElementById('errorMsg');
+      const warningMsg = document.getElementById('warningMsg');
+      const tokenForm = document.getElementById('tokenForm');
+      
+      // Clear messages
+      hideMessages();
+
+      // Check MetaMask
+      if (typeof window.ethereum === 'undefined') {
+        showError("MetaMask not detected. Please install MetaMask extension.");
+        if (confirm("Open MetaMask download page?")) {
+          window.open('https://metamask.io/download/', '_blank');
+        }
+        return;
+      }
+
+      try {
+        // Show loading
+        if (!autoConnect) {
+          btnConnect.innerHTML = '<span class="spinner"></span><span>Connecting...</span>';
+          btnConnect.disabled = true;
+        }
+
+        // Create provider
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        // Request accounts
+        const accounts = await provider.send("eth_requestAccounts", []);
+        if (accounts.length === 0) throw new Error("No accounts found");
+
+        // Get signer and address
+        signer = provider.getSigner();
+        userAddress = await signer.getAddress();
+        
+        // Check network
+        const network = await provider.getNetwork();
+        console.log("Current network:", network);
+
+        // Check if connected to Plasma Chain
+        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        
+        if (currentChainId !== PLASMA_CHAIN.chainId) {
+          showWarning(`Please switch to Plasma Mainnet (Chain ID: 9745) to continue.`);
+          
+          // Try to switch to Plasma Chain
+          try {
+            await switchToPlasmaChain();
+          } catch (switchError) {
+            console.error("Failed to switch network:", switchError);
+            showError("Please manually switch to Plasma Mainnet in MetaMask");
+            resetConnectButton();
+            return;
+          }
+        }
+
+        // Get balance
+        const balance = await provider.getBalance(userAddress);
+        const formattedBalance = ethers.utils.formatEther(balance);
+
+        // Update UI
+        document.getElementById('walletAddress').textContent = 
+          `${userAddress.substring(0, 6)}...${userAddress.substring(38)}`;
+        document.getElementById('walletBalance').textContent = 
+          `Balance: ${parseFloat(formattedBalance).toFixed(4)} XPL`;
+        
+        walletStatus.classList.add('connected');
+        tokenForm.style.display = 'block';
+        btnConnect.style.display = 'none';
+        
+        showSuccess("Wallet connected successfully to Plasma Mainnet!");
+
+        // Listen for events
+        window.ethereum.on('accountsChanged', handleAccountsChanged);
+        window.ethereum.on('chainChanged', handleChainChanged);
+        
+      } catch (err) {
+        console.error("Connection error:", err);
+        
+        if (err.code === 4001) {
+          showError("Connection cancelled by user");
+        } else if (err.code === -32002) {
+          showError("Please check MetaMask popup");
+        } else {
+          showError(err.message || "Failed to connect wallet");
+        }
+        
+        resetConnectButton();
+      }
+    }
+
+    async function switchToPlasmaChain() {
+      try {
+        // Try to switch to Plasma Chain
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: PLASMA_CHAIN.chainId }],
+        });
+      } catch (switchError) {
+        // Chain doesn't exist, add it
+        if (switchError.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [PLASMA_CHAIN],
+            });
+          } catch (addError) {
+            throw addError;
+          }
+        } else {
+          throw switchError;
+        }
+      }
+    }
+
+    function handleAccountsChanged(accounts) {
+      if (accounts.length === 0) {
+        disconnectWallet();
+      } else {
+        window.location.reload();
+      }
+    }
+
+    async function handleChainChanged(chainId) {
+      if (chainId !== PLASMA_CHAIN.chainId) {
+        showWarning("Please switch back to Plasma Chain");
+        await switchToPlasmaChain();
+      } else {
+        window.location.reload();
+      }
+    }
+
+    function disconnectWallet() {
+      provider = null;
+      signer = null;
+      userAddress = null;
+      
+      document.getElementById('walletStatus').classList.remove('connected');
+      document.getElementById('tokenForm').style.display = 'none';
+      document.getElementById('btnConnect').style.display = 'block';
+      
+      resetConnectButton();
+      showSuccess("Wallet disconnected");
+    }
+
+    function resetConnectButton() {
+      const btnConnect = document.getElementById('btnConnect');
+      btnConnect.innerHTML = '<span>🔗</span><span>Connect Wallet</span>';
+      btnConnect.disabled = false;
+    }
+
+    async function createToken() {
+      if (!signer) {
+        showError("Please connect wallet first");
+        return;
+      }
+
+      const name = document.getElementById('tokenName').value.trim();
+      const symbol = document.getElementById('tokenSymbol').value.trim().toUpperCase();
+      const supply = document.getElementById('totalSupply').value;
+
+      if (!name || !symbol || !supply) {
+        showError("All fields are required");
+        return;
+      }
+
+      if (symbol.length > 10) {
+        showError("Symbol must be 10 characters or less");
+        return;
+      }
+
+      if (supply < 1 || supply > 1000000000000) {
+        showError("Supply must be between 1 and 1,000,000,000,000");
+        return;
+      }
+
+      const createBtn = document.getElementById('createBtn');
+      createBtn.innerHTML = '<span class="spinner"></span><span>Creating Token...</span>';
+      createBtn.disabled = true;
+
+      try {
+        // Check balance for fee
+        const balance = await provider.getBalance(userAddress);
+        const balanceInXPL = parseFloat(ethers.utils.formatEther(balance));
+        const requiredFee = parseFloat(CREATION_FEE) + 0.01; // Fee + gas estimate
+
+        if (balanceInXPL < requiredFee) {
+          throw new Error(`Insufficient balance. You need at least ${requiredFee} XPL`);
+        }
+
+        console.log("Creating token:", { name, symbol, supply });
+
+        // FOR DEMO: Simulate contract interaction
+        // In production, uncomment the contract code below and comment out the simulation
+        
+        /* === ACTUAL CONTRACT CODE (uncomment when contract is deployed) ===
+        // Connect to factory contract
+        const factoryContract = new ethers.Contract(
+          TOKEN_FACTORY_ADDRESS,
+          TOKEN_FACTORY_ABI,
+          signer
+        );
+
+        // Send transaction with fee
+        const tx = await factoryContract.createToken(
+          name,
+          symbol,
+          ethers.utils.parseEther(supply.toString()),
+          {
+            value: ethers.utils.parseEther(CREATION_FEE),
+            gasLimit: 500000
+          }
+        );
+
+        // Show transaction pending
+        showWarning(`Transaction sent! Waiting for confirmation... TX: ${tx.hash.substring(0, 10)}...`);
+        
+        // Wait for transaction
+        const receipt = await tx.wait();
+        console.log("Transaction receipt:", receipt);
+
+        // Get token address from events
+        const event = receipt.events?.find(e => e.event === 'TokenCreated');
+        const tokenAddress = event?.args?.tokenAddress;
+        === END ACTUAL CODE === */
+
+        // DEMO SIMULATION (remove this when using real contract)
+        showWarning("Creating token on blockchain...");
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        // Generate random token address for demo
+        const tokenAddress = '0x' + Math.random().toString(16).substring(2, 42).padEnd(40, '0');
+        
+        showSuccess(`✅ Token "${name}" (${symbol}) created successfully!`);
+        
+        // Store token data in localStorage for demo
+        const tokenData = {
+          address: tokenAddress,
+          name: name,
+          symbol: symbol,
+          supply: supply,
+          creator: userAddress,
+          createdAt: new Date().toISOString()
+        };
+        
+        // Save to localStorage with simpler key for debugging
+        const storageKey = `token_${tokenAddress}`;
+        localStorage.setItem(storageKey, JSON.stringify(tokenData));
+        console.log("Token saved to localStorage:", storageKey, tokenData);
+        
+        // Wait a bit before redirect
+        setTimeout(() => {
+          // Redirect to token page
+          const redirectUrl = `token.html?address=${tokenAddress}`;
+          console.log("Redirecting to:", redirectUrl);
+          window.location.href = redirectUrl;
+        }, 2000);
+        
+      } catch (err) {
+        console.error("Token creation failed:", err);
+        
+        if (err.code === 4001) {
+          showError("Transaction cancelled by user");
+        } else if (err.code === -32603) {
+          showError("Insufficient funds for gas fee");
+        } else {
+          showError("Failed to create token: " + err.message);
+        }
+        
+        createBtn.innerHTML = '<span>🚀</span><span>Launch Token (0.1 XPL Fee)</span>';
+        createBtn.disabled = false;
+      }
+    }
+
+    // Message helpers
+    function showError(msg) {
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+      setTimeout(() => hideMessages(), 5000);
+    }
+
+    function showWarning(msg) {
+      const warningMsg = document.getElementById('warningMsg');
+      warningMsg.textContent = msg;
+      warningMsg.style.display = 'block';
+    }
+
+    function showSuccess(msg) {
+      const successMsg = document.getElementById('successMsg');
+      successMsg.textContent = msg;
+      successMsg.style.display = 'block';
+      setTimeout(() => hideMessages(), 3000);
+    }
+
+    function hideMessages() {
+      document.getElementById('errorMsg').style.display = 'none';
+      document.getElementById('warningMsg').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'none';
+    }
+
+    // Input validation
+    document.getElementById('tokenSymbol')?.addEventListener('input', function(e) {
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    });
+
+    document.getElementById('totalSupply')?.addEventListener('input', function(e) {
+      if (e.target.value < 0) e.target.value = 0;
+    });
+
+    // Debug: Check if everything is loaded
+    console.log("🔍 Window.ethereum:", window.ethereum);
+    console.log("🔍 Ethers loaded:", typeof ethers !== 'undefined');
+  </script>
+</body>
+</html>
